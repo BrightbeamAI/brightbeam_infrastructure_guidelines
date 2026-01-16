@@ -35,6 +35,7 @@ diagrams/              # Architecture diagrams
 - [Environment Configuration](docs/architecture/environments.md)
 - [Getting Started Guide](docs/guides/getting-started.md)
 - [Service Catalog](docs/services/README.md)
+- [Terraform](terraform/README.md)
 
 ## Naming Convention
 
