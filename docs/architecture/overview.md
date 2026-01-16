@@ -38,31 +38,12 @@ Standard architecture patterns for Brightbeam Azure deployments.
 | Application Insights   | Performance monitoring           |
 | Entra ID               | User authentication (SSO)        |
 
-## Architecture Patterns
-
-### Pattern 1: Standard Web Application
+## Architecture Pattern
 
 Django application with AI features. Most common pattern.
 
-**Services:** Container App, PostgreSQL (with pgVector extension), Azure OpenAI, Key Vault, Storage, App Insights
+**Services:** Container App, PostgreSQL (with pgVector extension), Azure OpenAI, Key Vault, Storage, App Insights, Blob Storage
 
-### Pattern 2: With Data Ingestion
-
-Adds automated file processing via Azure Functions.
-
-**Additional Services:** Function App, additional Storage container
-
-**Trigger Options:**
-- Blob Storage (file drop → automatic processing)
-- SharePoint webhook (requires Graph API permissions)
-
-### Pattern 3: RAG-Enabled
-
-Adds vector search for document retrieval.
-
-**Additional Requirements:**
-- PostgreSQL pgvector extension
-- Embedding model deployment (text-embedding-3-small)
 
 ## Cross-Tenant Model
 
