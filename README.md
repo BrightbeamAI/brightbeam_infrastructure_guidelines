@@ -1,6 +1,6 @@
-# Brightbeam Lifesciences and Medtech Infrastructure Guidelines
+# Brightbeam Lifesciences Infrastructure Guidelines
 
-Infrastructure documentation and deployment guidelines for Brightbeam Lifesciences and Medtech solutions on Microsoft Azure.
+Infrastructure documentation and deployment guidelines for Brightbeam Lifesciences solutions on Microsoft Azure.
 
 ## Overview
 

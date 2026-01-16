@@ -10,12 +10,28 @@ Before using Terraform to deploy to Azure, you need:
    ```bash
    # macOS
    brew install terraform
+
+   # Windows (Chocolatey)
+   choco install terraform
+
+   # Windows (Scoop)
+   scoop install terraform
+
+   # Or download the installer: https://www.terraform.io/downloads
    ```
 
 2. **Azure CLI** (required for authentication)
    ```bash
    # macOS
    brew install azure-cli
+
+   # Windows (Chocolatey)
+   choco install azure-cli
+
+   # Windows (winget)
+   winget install Microsoft.AzureCLI
+
+   # Or download via: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
    ```
 
 3. **Azure Authentication**
