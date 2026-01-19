@@ -1,0 +1,23 @@
+## Example configuration for environment-specific state storage
+## Copy this to environments/{env}/terraform.tfvars and customize values
+
+# Azure subscription ID (get from: az account show --query id -o tsv)
+subscription_id = "your-subscription-id-here"
+
+# Azure region for state resources
+location = "northeurope"
+
+# Resource group for Terraform state (include environment in name)
+# Example for UAT: "rg-{project_name}-terraform-state-uat"
+# Example for Prod: "rg-{project_name}-terraform-state-prod"
+resource_group_name = "rg-{project_name}-terraform-state-{environment}"
+
+# Globally unique storage account name (must be 3-24 lowercase alphanumerics)
+# Include environment in name to ensure uniqueness
+# Example for UAT: "{project_name}tfstateuat"
+# Example for Prod: "{project_name}tfstateprod"
+storage_account_name = "{project_name}tfstate{environment}"
+
+# Blob container for state files
+container_name = "tfstate"
+
