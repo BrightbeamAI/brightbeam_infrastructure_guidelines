@@ -4,10 +4,10 @@ LLM capabilities for AI-powered features.
 
 ## Configuration
 
-| Setting        | DEV           | UAT           | PROD             |
-|----------------|---------------|---------------|------------------|
-| Region         | Sweden Central| Sweden Central| Sweden Central   |
-| Network Access | Public        | Public        | Private Endpoint |
+| Setting          | DEV                      | UAT                      | PROD                     |
+|------------------|--------------------------|--------------------------|--------------------------|
+| Deployment Type  | Data Zone Standard (EUR) | Data Zone Standard (EUR) | Data Zone Standard (EUR) |
+| Network Access   | Public                   | Public                   | Private Endpoint         |
 
 ## Standard Model Deployments
 
@@ -21,7 +21,11 @@ LLM capabilities for AI-powered features.
 
 ## Deployment Considerations
 
+**Data Zone Standard (EUR)** ensures all data processing (inputs, outputs, model inference) remains within the European Union data boundary for GDPR compliance. Traffic is dynamically routed to the data center with best availability within the EU zone.
+
 **Separate instances per subscription.** TPM quotas are shared across all deployments in a subscription. Deploy separate Azure OpenAI instances for DEV, UAT, and PROD to prevent quota conflicts.
+
+> **Note:** GPT-5 models are only available via Data Zone Standard deployments, not regional deployments.
 
 ## Access Configuration
 

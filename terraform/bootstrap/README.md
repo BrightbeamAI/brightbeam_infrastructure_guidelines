@@ -9,21 +9,6 @@ This project creates Azure Storage for Terraform remote state management.
 
 **Note:** This uses a local backend and must be run before the main infrastructure.
 
-## Structure
-
-```
-bootstrap/
-├── environments/
-│   ├── uat/
-│   │   └── terraform.tfvars    # UAT state storage configuration
-│   └── prod/
-│       └── terraform.tfvars     # Production state storage configuration
-├── main.tf
-├── variables.tf
-├── outputs.tf
-└── Makefile
-```
-
 ## Usage
 
 ```bash

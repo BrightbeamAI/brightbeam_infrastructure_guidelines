@@ -31,7 +31,6 @@ Connected to Log Analytics workspace.
 | Response time             | > 5s average       | Warning  |
 | Container App restarts    | > 3 in 10 minutes  | Critical |
 | Database CPU              | > 80% sustained    | Warning  |
-| Failed authentication     | > 10 in 5 minutes  | Warning  |
 
 ## Diagnostic Settings
 
