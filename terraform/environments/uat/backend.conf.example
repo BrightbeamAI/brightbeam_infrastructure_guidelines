@@ -1,0 +1,9 @@
+# Terraform Backend Configuration - UAT
+# Copy this to backend.conf and update with your values
+# DO NOT commit backend.conf (contains sensitive info)
+
+# Azure Storage Account for Terraform State
+resource_group_name  = "rg-{project_name}-terraform-state"
+storage_account_name = "{project_name}tfstate"
+container_name       = "tfstate"
+key                  = "{project_name}-{environment}.tfstate"

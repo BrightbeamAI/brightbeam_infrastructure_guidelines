@@ -1,0 +1,11 @@
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+terraform/environments/*/backend.conf
+terraform/bootstrap/terraform.tfvars
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+main.tf.backup
+.env
+.cursor
