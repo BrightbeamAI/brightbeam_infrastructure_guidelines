@@ -217,17 +217,17 @@ module "compute" {
   application_insights_connection_string = module.observability.application_insights_connection_string
   container_apps_subnet_id               = module.networking.container_apps_subnet_id
   functions_subnet_id                    = module.networking.functions_subnet_id
+  key_vault_id                           = module.security.key_vault_id
   key_vault_uri                          = module.security.key_vault_uri
   container_registry_login_server        = module.container_registry.login_server
-  container_registry_username            = module.container_registry.admin_username
-  container_registry_password            = module.container_registry.admin_password
   storage_account_name                   = module.storage.storage_account_name
+  functions_storage_account_id           = module.storage.functions_storage_account_id
   functions_storage_account_name         = module.storage.functions_storage_account_name
-  functions_storage_account_key          = module.storage.functions_storage_account_primary_access_key
   container_app_identity_id              = module.security.container_app_identity_id
   container_app_identity_client_id       = module.security.container_app_identity_client_id
   function_app_identity_id               = module.security.function_app_identity_id
   function_app_identity_client_id        = module.security.function_app_identity_client_id
+  function_app_identity_principal_id     = module.security.function_app_identity_principal_id
 
   # Container App configuration
   container_app_image        = var.container_app_image
@@ -239,7 +239,8 @@ module "compute" {
 
   # Function App configuration
   function_app_sku_name            = var.function_app_sku_name
-  function_app_python_version      = var.function_app_python_version
+  function_app_image_name          = var.function_app_image_name
+  function_app_image_tag           = var.function_app_image_tag
   function_app_schedule_expression = var.function_app_schedule_expression
 
   tags = local.common_tags

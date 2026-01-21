@@ -39,6 +39,11 @@ variable "functions_subnet_id" {
   type        = string
 }
 
+variable "key_vault_id" {
+  description = "ID of the Key Vault (for role assignments)"
+  type        = string
+}
+
 variable "key_vault_uri" {
   description = "URI of the Key Vault"
   type        = string
@@ -49,20 +54,13 @@ variable "container_registry_login_server" {
   type        = string
 }
 
-variable "container_registry_username" {
-  description = "Username for Container Registry"
-  type        = string
-  sensitive   = true
-}
-
-variable "container_registry_password" {
-  description = "Password for Container Registry"
-  type        = string
-  sensitive   = true
-}
-
 variable "storage_account_name" {
   description = "Name of the storage account"
+  type        = string
+}
+
+variable "functions_storage_account_id" {
+  description = "ID of the storage account for functions"
   type        = string
 }
 
@@ -71,10 +69,9 @@ variable "functions_storage_account_name" {
   type        = string
 }
 
-variable "functions_storage_account_key" {
-  description = "Access key for the functions storage account"
+variable "function_app_identity_principal_id" {
+  description = "Principal ID of function app managed identity (for role assignments)"
   type        = string
-  sensitive   = true
 }
 
 variable "container_app_identity_id" {
@@ -153,16 +150,22 @@ variable "function_app_sku_name" {
   default     = "EP1"
 }
 
-variable "function_app_python_version" {
-  description = "Python version for function app"
+variable "function_app_image_name" {
+  description = "Docker image name for function app (leave empty to use Microsoft placeholder)"
   type        = string
-  default     = "3.11"
+  default     = ""
+}
+
+variable "function_app_image_tag" {
+  description = "Docker image tag for function app"
+  type        = string
+  default     = "latest"
 }
 
 variable "function_app_schedule_expression" {
-  description = "CRON expression for scheduled function"
+  description = "CRON expression for timer-triggered functions (optional, only needed for scheduled triggers)"
   type        = string
-  default     = "0 0 6 * * *"
+  default     = null
 }
 
 variable "tags" {

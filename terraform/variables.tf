@@ -118,8 +118,8 @@ variable "blob_containers" {
   description = "Map of blob container names to access types (private or blob)"
   type        = map(string)
   default = {
-    "static-ui" = "blob" # Public read access for CSS/JS/images
-    "media"     = "blob" # Public read access for static media
+    "static" = "blob" # Public read access for CSS/JS/images
+    "uploads"     = "private" # Private access for user uploads
   }
 }
 
@@ -245,21 +245,27 @@ variable "container_app_target_port" {
 
 # Function App Configuration
 variable "function_app_sku_name" {
-  description = "SKU name for the Function App Service Plan"
+  description = "SKU name for the Function App Service Plan (must be EP1/EP2/EP3 for containers)"
   type        = string
   default     = "EP1"
 }
 
-variable "function_app_python_version" {
-  description = "Python version for function app"
+variable "function_app_image_name" {
+  description = "Docker image name for function app (leave empty to use Microsoft placeholder image)"
   type        = string
-  default     = "3.11"
+  default     = ""
+}
+
+variable "function_app_image_tag" {
+  description = "Docker image tag for function app"
+  type        = string
+  default     = "latest"
 }
 
 variable "function_app_schedule_expression" {
-  description = "CRON expression for scheduled function (default: 6 AM daily)"
+  description = "CRON expression for timer-triggered functions (optional, only needed for scheduled triggers)"
   type        = string
-  default     = "0 0 6 * * *"
+  default     = null
 }
 
 # Tags
