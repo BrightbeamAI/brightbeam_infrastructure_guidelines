@@ -56,16 +56,6 @@ resource "azurerm_container_app" "main" {
       }
 
       env {
-        name  = "OPENAI_API_KEY_SECRET"
-        value = "openai-api-key"
-      }
-
-      env {
-        name  = "OPENAI_ENDPOINT_SECRET"
-        value = "openai-endpoint"
-      }
-
-      env {
         name  = "STORAGE_ACCOUNT_NAME"
         value = var.storage_account_name
       }
@@ -153,6 +143,10 @@ resource "azurerm_linux_function_app" "main" {
     # Managed identity configuration for SDK-based Key Vault access
     "AZURE_KEY_VAULT_URL" = var.key_vault_uri
     "AZURE_CLIENT_ID"     = var.function_app_identity_client_id
+
+    # Application configuration
+    "POSTGRES_CONNECTION_STRING_SECRET" = "postgres-connection-string"
+    "STORAGE_ACCOUNT_NAME"              = var.storage_account_name
     }, var.function_app_schedule_expression != null ? {
     # Application configuration - timer trigger (optional)
     "SCHEDULE_EXPRESSION" = var.function_app_schedule_expression

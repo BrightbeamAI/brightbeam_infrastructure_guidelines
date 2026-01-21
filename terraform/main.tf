@@ -184,10 +184,13 @@ module "security" {
   ]
 
   # Pass secrets from other modules
-  postgres_password            = module.data_platform.postgres_admin_password
   postgres_connection_string   = module.data_platform.postgres_connection_string
   openai_api_key               = module.ai_services.openai_primary_access_key
   openai_endpoint              = module.ai_services.openai_endpoint
+  openai_deployment_name       = module.ai_services.gpt_reasoning_deployment_name
+  openai_api_version           = var.openai_api_version
+  embeddings_deployment_name   = module.ai_services.embeddings_deployment_name
+  embeddings_api_version       = var.embeddings_api_version
   servicebus_connection_string = module.data_platform.servicebus_connection_string
   acr_username                 = module.container_registry.admin_username
   acr_password                 = module.container_registry.admin_password

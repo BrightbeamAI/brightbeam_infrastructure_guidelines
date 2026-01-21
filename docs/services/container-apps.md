@@ -5,6 +5,7 @@ Primary hosting platform for Django applications.
 ## Configuration
 
 ### Container App
+Suggested configuration:
 
 | Setting      | DEV  | UAT  | PROD | Notes                    |
 |--------------|------|------|------|--------------------------|
@@ -48,9 +49,39 @@ Enable system-assigned managed identity for passwordless access to:
 
 ## Environment Variables
 
-Configure via Key Vault references where possible:
+The following environment variables are automatically configured:
 
+### Managed Identity Configuration
+```bash
+AZURE_KEY_VAULT_URL          # Key Vault URI for SDK-based secret retrieval
+AZURE_CLIENT_ID              # User-assigned managed identity client ID
 ```
-DATABASE_URL=secretref:kv-project-env/database-url
-DJANGO_SECRET_KEY=secretref:kv-project-env/django-secret-key
+
+### Other Settings
+```bash
+STORAGE_ACCOUNT_NAME                 # Azure Storage account name
+POSTGRES_CONNECTION_STRING_SECRET    # Key Vault secret name for PostgreSQL connection
 ```
+
+### Secrets
+
+See [Key Vault documentation](key-vault.md) for the complete list of available secrets.
+
+## Differences from Function Apps
+
+| Feature | Container Apps | Function Apps |
+|---------|---------------|---------------|
+| **Purpose** | Web applications, APIs | Background jobs, scheduled tasks |
+| **Scaling** | HTTP-based autoscaling | Event-driven + timer-based |
+| **Ingress** | External HTTPS endpoint | No public endpoint (event-driven) |
+| **Runtime** | Any container | Azure Functions runtime required |
+| **Storage** | Optional | Required (internal Functions state) |
+| **Environment Variables** | Core vars only | Core vars + Functions-specific |
+
+Both apps have identical access to:
+- Key Vault secrets via managed identity
+- PostgreSQL database
+- Storage accounts
+- Azure OpenAI
+
+See [Function Apps documentation](function-apps.md) for details on scheduled tasks and background processing.

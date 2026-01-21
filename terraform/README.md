@@ -55,37 +55,6 @@ Before using Terraform to deploy to Azure, you need:
    - Contributor or Owner role on the target subscription
    - Ability to create resource groups and resources
 
-## Structure
-
-```
-terraform/
-├── Makefile                     # Convenient make targets for common operations
-├── main.tf                      # Root module orchestrating all infrastructure
-├── variables.tf                 # Root-level variable definitions
-├── outputs.tf                   # Root-level outputs
-├── provider.tf                  # Azure provider configuration
-├── terraform.tfvars.example     # Example variables file
-├── main.tf.backup               # Backup of original monolithic file
-├── environments/
-│   ├── uat/
-│   │   ├── terraform.tfvars         # UAT configuration
-│   │   ├── backend.conf             # UAT backend config (git-ignored)
-│   │   └── backend.conf.example     # Backend template
-│   └── prod/
-│       ├── terraform.tfvars         # Production configuration
-│       ├── backend.conf             # Prod backend config (git-ignored)
-│       └── backend.conf.example     # Backend template
-└── modules/
-    ├── networking/             # VNet, subnets with delegations
-    ├── observability/          # Log Analytics, Application Insights
-    ├── storage/                # Storage accounts and blob containers
-    ├── container_registry/     # Azure Container Registry
-    ├── data_platform/          # PostgreSQL + Service Bus
-    ├── ai_services/            # Azure OpenAI + deployments
-    ├── security/               # Key Vault, managed identities, secrets
-    └── compute/                # Container Apps + Function Apps
-```
-
 ## Module Organization
 
 ### 1. **networking**
@@ -109,23 +78,28 @@ terraform/
 - Azure Container Registry
 - Network rules (Premium SKU only)
 
-### 5. **data_platform**
+### 5. **image_copy_sp**
+- Service Principal for Brightbeam image copying (optional)
+- Scoped AcrPush role on Container Registry
+- Password-based credentials stored in Key Vault
+
+### 6. **data_platform**
 - PostgreSQL Flexible Server with pgvector
 - PostgreSQL database
 - Service Bus namespace + queue
 
-### 6. **ai_services**
+### 7. **ai_services**
 - Azure OpenAI Cognitive Account
-- GPT-4 deployment
+- GPT-5.1 Reasoning Model deployment
 - Text embedding deployment
 
-### 7. **security**
+### 8. **security**
 - Key Vault with network rules
 - Managed identities (container app, function app)
 - Access policies
 - Secret storage
 
-### 8. **compute**
+### 9. **compute**
 - Container Apps Environment
 - Container App (Django app)
 - App Service Plan

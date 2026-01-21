@@ -74,30 +74,28 @@ All secrets stored in Azure Key Vault.
 
 **Standard Secrets:**
 
-| Secret                | Rotation  |
-|-----------------------|-----------|
-| django-secret-key     | On demand |
-| database-password*    | 90 days   |
-| openai-key            | 90 days   |
-
-> *Not required if using Azure AD authentication for PostgreSQL.
+| Secret                      | Description                    | Rotation  |
+|-----------------------------|--------------------------------|-----------|
+| django-secret-key           | Django SECRET_KEY              | On demand |
+| postgres-password           | PostgreSQL admin password      | 90 days   |
+| postgres-connection-string  | PostgreSQL connection string   | 90 days   |
+| openai-api-key              | Azure OpenAI API key           | 90 days   |
+| openai-endpoint             | Azure OpenAI endpoint URL      | Static    |
 
 **Access Pattern:**
-1. Container App authenticates via Managed Identity
+1. Container App/Function App authenticates to Key Vault via Managed Identity
 2. Retrieves secrets at startup
-3. Secrets cached in memory only
+3. Secrets cached in memory only, never written to disk
 
 ## Database Authentication
 
-**Option A: Azure AD (Recommended)**
-- Managed Identity as Azure AD Admin
-- No password storage required
-- Automatic token rotation
+Applications connect to PostgreSQL using username/password authentication with credentials stored in Key Vault.
 
-**Option B: PostgreSQL User**
-- Dedicated application user
-- Password in Key Vault
-- 90-day rotation policy
+**Security model:**
+- PostgreSQL admin username and password auto-generated during Terraform deployment
+- Credentials stored securely in Azure Key Vault
+- Applications retrieve credentials using managed identity (passwordless Key Vault access)
+- Database server has no public endpoint (private network only)
 
 ## Security Checklist
 

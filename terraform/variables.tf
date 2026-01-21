@@ -206,6 +206,18 @@ variable "embeddings_model_version" {
   default     = "1"
 }
 
+variable "openai_api_version" {
+  description = "Azure OpenAI API version"
+  type        = string
+  default     = "2024-02-15-preview"
+}
+
+variable "embeddings_api_version" {
+  description = "Azure OpenAI embeddings API version"
+  type        = string
+  default     = "2024-02-15-preview"
+}
+
 # Security Configuration
 variable "key_vault_sku" {
   description = "SKU for Key Vault"

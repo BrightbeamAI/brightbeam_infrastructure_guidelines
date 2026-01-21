@@ -10,17 +10,6 @@ This is a high-level guide with generic suggestions. Each project may require mo
 
 We use terraform for our Infrastructure as Code. This repository contains an example terraform configuration that can be updated and used for establishing your infrastructure, based on what is required for your project.
 
-## Repository Structure
-
-```
-docs/
-├── architecture/       # Architecture patterns and environment setup
-├── services/          # Azure service configurations
-└── guides/            # Step-by-step deployment guides
-terraform/             # Example Infrastructure as Code (should be updated with your own configuration for your project)
-diagrams/              # Architecture diagrams
-```
-
 ## Environments
 
 | Environment | Hosted By   | Purpose                    |
@@ -51,6 +40,7 @@ See the [Getting Started Guide](docs/guides/getting-started.md) for detailed set
 
 - [Architecture Overview](docs/architecture/overview.md)
 - [Environment Configuration](docs/architecture/environments.md)
+- [Environment Variables Reference](docs/architecture/environment-variables.md)
 - [Getting Started Guide](docs/guides/getting-started.md)
 - [Service Catalog](docs/services/README.md)
 - [Terraform](terraform/README.md)

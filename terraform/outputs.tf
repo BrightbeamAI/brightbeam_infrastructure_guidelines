@@ -59,11 +59,10 @@ output "gpt_reasoning_deployment_name" {
   value       = module.ai_services.gpt_reasoning_deployment_name
 }
 
-# Commented out because embeddings deployment is disabled due to quota
-# output "embeddings_deployment_name" {
-#   description = "Name of the embeddings deployment"
-#   value       = module.ai_services.embeddings_deployment_name
-# }
+output "embeddings_deployment_name" {
+  description = "Name of the embeddings deployment in Azure OpenAI"
+  value       = module.ai_services.embeddings_deployment_name
+}
 
 # Security
 output "key_vault_name" {

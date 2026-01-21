@@ -25,8 +25,7 @@ output "gpt_reasoning_deployment_name" {
   value       = azurerm_cognitive_deployment.gpt_reasoning.name
 }
 
-# Commented out because embeddings deployment is disabled due to quota
-# output "embeddings_deployment_name" {
-#   description = "Name of the embeddings deployment"
-#   value       = azurerm_cognitive_deployment.embeddings.name
-# }
+output "embeddings_deployment_name" {
+  description = "Name of the embeddings deployment"
+  value       = azurerm_cognitive_deployment.embeddings.name
+}
