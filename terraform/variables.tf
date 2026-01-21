@@ -115,11 +115,30 @@ variable "storage_replication_type" {
 }
 
 variable "blob_containers" {
-  description = "Map of blob container names to access types (private or blob)"
+  description = <<-EOT
+    Map of blob container names to access types.
+
+    Access types:
+    - "blob"    = Public read access (anonymous users can read blobs, not list containers)
+    - "private" = No public access (Azure authentication required)
+
+    Default containers:
+    - "static"  = Public CSS/JS/images for web UI (access type: blob)
+    - "uploads" = Private user documents (access type: private)
+
+    You can add additional containers by extending this map:
+    blob_containers = {
+      "static"   = "blob"
+      "uploads"  = "private"
+      "backups"  = "private"  # Example: add a backups container
+    }
+
+    Note: Container names must be lowercase and 3-63 characters.
+  EOT
   type        = map(string)
   default = {
-    "static" = "blob" # Public read access for CSS/JS/images
-    "uploads"     = "private" # Private access for user uploads
+    "static"  = "blob"
+    "uploads" = "private"
   }
 }
 

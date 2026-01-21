@@ -29,6 +29,24 @@ diagrams/              # Architecture diagrams
 | UAT         | Customer    | Pre-production validation  |
 | PROD        | Customer    | Production workload        |
 
+## For First-Time Users
+
+If you're new to Azure or infrastructure deployment:
+1. Start with the [Getting Started Guide](docs/guides/getting-started.md)
+2. Review [Prerequisites](#prerequisites) below
+3. Read [Architecture Overview](docs/architecture/overview.md) to understand what will be deployed
+
+## Prerequisites
+
+Before deploying this infrastructure, you need:
+- Active Azure subscription
+- Azure CLI installed and configured
+- Terraform v1.0 or higher
+- Contributor or Owner role on the subscription
+- Your public IP address (for Key Vault access)
+
+See the [Getting Started Guide](docs/guides/getting-started.md) for detailed setup instructions.
+
 ## Quick Links
 
 - [Architecture Overview](docs/architecture/overview.md)

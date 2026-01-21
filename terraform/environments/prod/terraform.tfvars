@@ -54,7 +54,6 @@ container_app_target_port  = 8000
 
 # Function App - Elastic Premium 2 for production
 function_app_sku_name = "EP2"
-function_app_python_version = "3.11"
 
 # Timer Trigger Configuration (Optional)
 # Only needed for scheduled/timer-triggered functions
