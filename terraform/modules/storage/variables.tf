@@ -46,8 +46,8 @@ variable "blob_containers" {
   description = "Map of blob container names to access types"
   type        = map(string)
   default = {
-    "static-ui" = "blob"
-    "images"    = "blob"
+    "static" = "blob"
+    "uploads"    = "private"
   }
 }
 

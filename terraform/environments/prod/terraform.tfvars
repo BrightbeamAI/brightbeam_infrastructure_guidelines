@@ -53,9 +53,12 @@ container_app_max_replicas = 20
 container_app_target_port  = 8000
 
 # Function App - Elastic Premium 2 for production
-function_app_sku_name            = "EP2"
-function_app_python_version      = "3.11"
-function_app_schedule_expression = "0 0 6 * * *" # 6 AM daily
+function_app_sku_name = "EP2"
+
+# Timer Trigger Configuration (Optional)
+# Only needed for scheduled/timer-triggered functions
+# For other trigger types (Blob, HTTP, Event Grid, Service Bus), comment out or remove this line
+# function_app_schedule_expression = "0 0 6 * * *" # 6 AM daily
 
 # Additional tags
 additional_tags = {

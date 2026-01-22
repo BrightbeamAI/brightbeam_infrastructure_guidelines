@@ -13,23 +13,41 @@ Centralised secrets management.
 
 ## Standard Secrets
 
-| Secret Name           | Description              | Rotation   |
-|-----------------------|--------------------------|------------|
-| django-secret-key     | Django SECRET_KEY        | On demand  |
-| database-url          | PostgreSQL connection    | 90 days*   |
-| openai-endpoint       | Azure OpenAI URL         | Static     |
-| openai-key            | Azure OpenAI API key     | 90 days    |
+The following secrets are automatically created by Terraform:
 
-> *Not required if using Azure AD authentication for PostgreSQL.
+| Secret Name                  | Description                                      |
+|------------------------------|--------------------------------------------------|
+| postgres-connection-string   | PostgreSQL full connection string (includes embedded password) |
+| openai-api-key               | Azure OpenAI API key                             |
+| openai-endpoint              | Azure OpenAI endpoint URL                        |
+| openai-deployment-name       | Azure OpenAI GPT model deployment name           |
+| openai-api-version           | Azure OpenAI API version (e.g., 2024-02-15-preview) |
+| embeddings-deployment-name   | Azure OpenAI embeddings model deployment name    |
+| embeddings-api-version       | Azure OpenAI embeddings API version              |
+| servicebus-connection-string | Service Bus namespace connection string          |
+| acr-username                 | Container Registry admin username                |
+| acr-password                 | Container Registry admin password                |
+| image-copy-client-id         | Brightbeam image-copy service principal ID (optional) |
+| image-copy-client-secret     | Brightbeam image-copy service principal secret (optional) |
+
+**Note:** The `image-copy-*` secrets are only created if the `create_image_copy_service_principal` variable is enabled in Terraform.
 
 ## Access Model
 
-Use Azure RBAC (not Access Policies):
+This infrastructure uses **Access Policies** for Key Vault authentication:
 
-| Role                   | Principal              | Purpose            |
+| Access Policy          | Principal              | Permissions        |
 |------------------------|------------------------|--------------------|
-| Key Vault Secrets User | Container App MI       | Read secrets       |
-| Key Vault Administrator| DevOps Service Principal| Manage secrets    |
+| Secret Permissions     | Container App Managed Identity | Get, List   |
+| Secret Permissions     | Function App Managed Identity  | Get, List   |
+| Secret Permissions     | Deployer (Terraform)   | Get, List, Set, Delete, Purge |
+
+**Why Access Policies?**
+- Simpler configuration for straightforward secret access scenarios
+- Works well with managed identities
+- Sufficient for most application needs
+
+**Note:** Azure RBAC for Key Vault is an alternative model that provides more granular control and integrates with Azure's unified RBAC system. Consider migrating to RBAC if you need more complex permission scenarios.
 
 ## Secret References in Container Apps
 

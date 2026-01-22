@@ -24,6 +24,11 @@ output "container_names" {
   value       = [for c in azurerm_storage_container.containers : c.name]
 }
 
+output "functions_storage_account_id" {
+  description = "ID of the functions storage account"
+  value       = azurerm_storage_account.functions.id
+}
+
 output "functions_storage_account_name" {
   description = "Name of the functions storage account"
   value       = azurerm_storage_account.functions.name

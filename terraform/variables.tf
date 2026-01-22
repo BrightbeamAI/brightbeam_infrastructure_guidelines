@@ -115,11 +115,30 @@ variable "storage_replication_type" {
 }
 
 variable "blob_containers" {
-  description = "Map of blob container names to access types (private or blob)"
+  description = <<-EOT
+    Map of blob container names to access types.
+
+    Access types:
+    - "blob"    = Public read access (anonymous users can read blobs, not list containers)
+    - "private" = No public access (Azure authentication required)
+
+    Default containers:
+    - "static"  = Public CSS/JS/images for web UI (access type: blob)
+    - "uploads" = Private user documents (access type: private)
+
+    You can add additional containers by extending this map:
+    blob_containers = {
+      "static"   = "blob"
+      "uploads"  = "private"
+      "backups"  = "private"  # Example: add a backups container
+    }
+
+    Note: Container names must be lowercase and 3-63 characters.
+  EOT
   type        = map(string)
   default = {
-    "static-ui" = "blob" # Public read access for CSS/JS/images
-    "media"     = "blob" # Public read access for static media
+    "static"  = "blob"
+    "uploads" = "private"
   }
 }
 
@@ -187,6 +206,18 @@ variable "embeddings_model_version" {
   default     = "1"
 }
 
+variable "openai_api_version" {
+  description = "Azure OpenAI API version"
+  type        = string
+  default     = "2024-02-15-preview"
+}
+
+variable "embeddings_api_version" {
+  description = "Azure OpenAI embeddings API version"
+  type        = string
+  default     = "2024-02-15-preview"
+}
+
 # Security Configuration
 variable "key_vault_sku" {
   description = "SKU for Key Vault"
@@ -245,21 +276,27 @@ variable "container_app_target_port" {
 
 # Function App Configuration
 variable "function_app_sku_name" {
-  description = "SKU name for the Function App Service Plan"
+  description = "SKU name for the Function App Service Plan (must be EP1/EP2/EP3 for containers)"
   type        = string
   default     = "EP1"
 }
 
-variable "function_app_python_version" {
-  description = "Python version for function app"
+variable "function_app_image_name" {
+  description = "Docker image name for function app (leave empty to use Microsoft placeholder image)"
   type        = string
-  default     = "3.11"
+  default     = ""
+}
+
+variable "function_app_image_tag" {
+  description = "Docker image tag for function app"
+  type        = string
+  default     = "latest"
 }
 
 variable "function_app_schedule_expression" {
-  description = "CRON expression for scheduled function (default: 6 AM daily)"
+  description = "CRON expression for timer-triggered functions (optional, only needed for scheduled triggers)"
   type        = string
-  default     = "0 0 6 * * *"
+  default     = null
 }
 
 # Tags

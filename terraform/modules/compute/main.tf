@@ -1,3 +1,12 @@
+# Local variables
+locals {
+  # Use placeholder image if custom image not provided
+  use_custom_function_image = var.function_app_image_name != ""
+  function_registry_url     = local.use_custom_function_image ? "https://${var.container_registry_login_server}" : "https://mcr.microsoft.com"
+  function_image_name       = local.use_custom_function_image ? var.function_app_image_name : "azure-functions/python"
+  function_image_tag        = local.use_custom_function_image ? var.function_app_image_tag : "4-python3.11"
+}
+
 # Container Apps Environment
 resource "azurerm_container_app_environment" "main" {
   name                       = "cae-${var.project_name}-${var.environment}"
@@ -47,16 +56,6 @@ resource "azurerm_container_app" "main" {
       }
 
       env {
-        name  = "OPENAI_API_KEY_SECRET"
-        value = "openai-api-key"
-      }
-
-      env {
-        name  = "OPENAI_ENDPOINT_SECRET"
-        value = "openai-endpoint"
-      }
-
-      env {
         name  = "STORAGE_ACCOUNT_NAME"
         value = var.storage_account_name
       }
@@ -95,14 +94,16 @@ resource "azurerm_service_plan" "functions" {
   tags = var.tags
 }
 
-# Linux Function App
+# Linux Function App (Containerized with Managed Identity)
 resource "azurerm_linux_function_app" "main" {
-  name                       = "func-${var.function_app_name}-${var.environment}"
-  location                   = var.location
-  resource_group_name        = var.resource_group_name
-  service_plan_id            = azurerm_service_plan.functions.id
-  storage_account_name       = var.functions_storage_account_name
-  storage_account_access_key = var.functions_storage_account_key
+  name                = "func-${var.function_app_name}-${var.environment}"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  service_plan_id     = azurerm_service_plan.functions.id
+  storage_account_name = var.functions_storage_account_name
+
+  # Use managed identity for storage access (no access key needed)
+  storage_uses_managed_identity = true
 
   # VNet integration only supported with Premium plans (EP1/EP2/EP3), not consumption (Y1)
   virtual_network_subnet_id = var.function_app_sku_name != "Y1" ? var.functions_subnet_id : null
@@ -115,25 +116,63 @@ resource "azurerm_linux_function_app" "main" {
   }
 
   site_config {
+    # Use Docker container instead of Python runtime
     application_stack {
-      python_version = var.function_app_python_version
+      docker {
+        registry_url = local.function_registry_url
+        image_name   = local.function_image_name
+        image_tag    = local.function_image_tag
+      }
     }
 
     application_insights_connection_string = var.application_insights_connection_string
+
+    # Use managed identity for ACR access (only when using custom image)
+    acr_use_managed_identity_credentials = local.use_custom_function_image
+    acr_user_managed_identity_client_id  = local.use_custom_function_image ? var.function_app_identity_client_id : null
   }
 
-  app_settings = {
-    "AZURE_KEY_VAULT_URL"                 = var.key_vault_uri
-    "AZURE_CLIENT_ID"                     = var.function_app_identity_client_id
-    "POSTGRES_CONNECTION_STRING_SECRET"   = "postgres-connection-string"
-    "OPENAI_API_KEY_SECRET"               = "openai-api-key"
-    "OPENAI_ENDPOINT_SECRET"              = "openai-endpoint"
-    "SERVICEBUS_CONNECTION_STRING_SECRET" = "servicebus-connection-string"
-    "SCHEDULE_EXPRESSION"                 = var.function_app_schedule_expression
-    "DOCKER_REGISTRY_SERVER_URL"          = "https://${var.container_registry_login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME"     = var.container_registry_username
-    "DOCKER_REGISTRY_SERVER_PASSWORD"     = var.container_registry_password
-  }
+  app_settings = merge({
+    # Azure Functions runtime configuration (required for containers)
+    "FUNCTIONS_WORKER_RUNTIME"            = "python"
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+
+    # Managed identity for storage account (replaces connection string)
+    "AzureWebJobsStorage__accountName" = var.functions_storage_account_name
+
+    # Managed identity configuration for SDK-based Key Vault access
+    "AZURE_KEY_VAULT_URL" = var.key_vault_uri
+    "AZURE_CLIENT_ID"     = var.function_app_identity_client_id
+
+    # Application configuration
+    "POSTGRES_CONNECTION_STRING_SECRET" = "postgres-connection-string"
+    "STORAGE_ACCOUNT_NAME"              = var.storage_account_name
+    }, var.function_app_schedule_expression != null ? {
+    # Application configuration - timer trigger (optional)
+    "SCHEDULE_EXPRESSION" = var.function_app_schedule_expression
+  } : {})
 
   tags = var.tags
+
+  # Ensure role assignments complete before function app deployment
+  depends_on = [
+    azurerm_role_assignment.function_app_storage_blob,
+    azurerm_role_assignment.function_app_key_vault
+  ]
+}
+
+# Grant Storage Blob Data Owner role to Function App managed identity
+# Required for storage_uses_managed_identity = true
+resource "azurerm_role_assignment" "function_app_storage_blob" {
+  scope                = var.functions_storage_account_id
+  role_definition_name = "Storage Blob Data Owner"
+  principal_id         = var.function_app_identity_principal_id
+}
+
+# Grant Key Vault Secrets User role to Function App managed identity
+# Required for SDK-based secret retrieval (Azure SDK SecretClient)
+resource "azurerm_role_assignment" "function_app_key_vault" {
+  scope                = var.key_vault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = var.function_app_identity_principal_id
 }

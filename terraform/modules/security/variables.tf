@@ -59,14 +59,8 @@ variable "allowed_subnet_ids" {
 }
 
 # Secrets to store
-variable "postgres_password" {
-  description = "PostgreSQL admin password"
-  type        = string
-  sensitive   = true
-}
-
 variable "postgres_connection_string" {
-  description = "PostgreSQL connection string"
+  description = "PostgreSQL connection string (includes embedded password)"
   type        = string
   sensitive   = true
 }
@@ -80,6 +74,28 @@ variable "openai_api_key" {
 variable "openai_endpoint" {
   description = "Azure OpenAI endpoint"
   type        = string
+}
+
+variable "openai_deployment_name" {
+  description = "Azure OpenAI deployment name for GPT model"
+  type        = string
+}
+
+variable "openai_api_version" {
+  description = "Azure OpenAI API version"
+  type        = string
+  default     = "2024-02-15-preview"
+}
+
+variable "embeddings_deployment_name" {
+  description = "Azure OpenAI embeddings deployment name"
+  type        = string
+}
+
+variable "embeddings_api_version" {
+  description = "Azure OpenAI embeddings API version"
+  type        = string
+  default     = "2024-02-15-preview"
 }
 
 variable "servicebus_connection_string" {

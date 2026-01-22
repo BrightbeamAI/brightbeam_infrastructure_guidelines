@@ -70,14 +70,6 @@ resource "azurerm_key_vault_access_policy" "function_app" {
 }
 
 # Store secrets in Key Vault
-resource "azurerm_key_vault_secret" "postgres_password" {
-  name         = "postgres-password"
-  value        = var.postgres_password
-  key_vault_id = azurerm_key_vault.main.id
-
-  depends_on = [azurerm_key_vault_access_policy.deployer]
-}
-
 resource "azurerm_key_vault_secret" "postgres_connection_string" {
   name         = "postgres-connection-string"
   value        = var.postgres_connection_string
@@ -97,6 +89,38 @@ resource "azurerm_key_vault_secret" "openai_key" {
 resource "azurerm_key_vault_secret" "openai_endpoint" {
   name         = "openai-endpoint"
   value        = var.openai_endpoint
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault_access_policy.deployer]
+}
+
+resource "azurerm_key_vault_secret" "openai_deployment_name" {
+  name         = "openai-deployment-name"
+  value        = var.openai_deployment_name
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault_access_policy.deployer]
+}
+
+resource "azurerm_key_vault_secret" "openai_api_version" {
+  name         = "openai-api-version"
+  value        = var.openai_api_version
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault_access_policy.deployer]
+}
+
+resource "azurerm_key_vault_secret" "embeddings_deployment_name" {
+  name         = "embeddings-deployment-name"
+  value        = var.embeddings_deployment_name
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault_access_policy.deployer]
+}
+
+resource "azurerm_key_vault_secret" "embeddings_api_version" {
+  name         = "embeddings-api-version"
+  value        = var.embeddings_api_version
   key_vault_id = azurerm_key_vault.main.id
 
   depends_on = [azurerm_key_vault_access_policy.deployer]

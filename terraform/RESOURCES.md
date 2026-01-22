@@ -18,7 +18,7 @@ This Terraform configuration creates a complete AI-powered application infrastru
 
 ### AI Services
 - **Azure OpenAI Account** - Hosts AI models
-  - GPT-4 deployment - For conversational AI
+  - GPT-5.1 Reasoning Model deployment - For conversational AI
   - Text embedding deployment - For semantic search/similarity
 
 ### Security
@@ -29,18 +29,18 @@ This Terraform configuration creates a complete AI-powered application infrastru
 ### Container Infrastructure
 - **Container Registry (ACR)** - Stores Docker images
 - **Container Apps Environment** - Managed Kubernetes environment
-- **Container App** - Runs Django application with auto-scaling (1-10 replicas)
+- **Container App** - Runs Django application with auto-scaling (1-5 in UAT, 2-20 in PROD)
 
 ### Serverless Processing
 - **App Service Plan** - Compute for function app
-- **Function App** - Scheduled data processing (runs daily at 6 AM)
+- **Function App** - Scheduled data processing (configurable via function_app_schedule_expression)
 
 ## Why Each Resource is Needed
 
 | Resource | Why? |
 |----------|------|
 | PostgreSQL | Store application data + AI embeddings (pgvector) |
-| Azure OpenAI | Provide GPT-4 and embeddings for AI features |
+| Azure OpenAI | Provide GPT-5.1 and embeddings for AI features |
 | Container App | Run web application with auto-scaling |
 | Function App | Process data on schedule without blocking web app |
 | Service Bus | Decouple web app from long-running tasks |

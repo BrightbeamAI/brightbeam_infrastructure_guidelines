@@ -11,13 +11,26 @@ LLM capabilities for AI-powered features.
 
 ## Standard Model Deployments
 
-| Model                    | Deployment Name          | Purpose              |
-|--------------------------|--------------------------|----------------------|
-| gpt-5.1               | gpt-5.1                   | Primary reasoning    |
-| gpt-5-mini          | gpt-5-mini              | High-volume tasks    |
-| text-embedding-3-small   | text-embedding-3-small   | Embeddings (RAG)     |
+| Model                    | Deployment Name          | Purpose              | Default Version |
+|--------------------------|--------------------------|----------------------|-----------------|
+| gpt-5.1               | gpt-5.1                   | Primary reasoning    | 2025-11-13      |
+| gpt-5-mini          | gpt-5-mini              | High-volume tasks    | -               |
+| text-embedding-3-small   | text-embedding-3-small   | Embeddings (RAG)     | 2               |
 
 > TPM = Tokens Per Minute. Quotas are subscription-level.
+
+## API Configuration
+
+The following configuration values are stored in Key Vault and retrieved at runtime using the Azure SDK:
+
+| Configuration          | Key Vault Secret           | Example Value                    |
+|------------------------|---------------------------|----------------------------------|
+| API Key                | openai-api-key            | (sensitive)                      |
+| Endpoint               | openai-endpoint           | https://oai-project-env.openai.azure.com/ |
+| Deployment Name        | openai-deployment-name    | gpt-5.1                          |
+| API Version            | openai-api-version        | 2024-02-15-preview               |
+| Embeddings Deployment  | embeddings-deployment-name| text-embedding-3-small           |
+| Embeddings API Version | embeddings-api-version    | 2024-02-15-preview               |
 
 ## Deployment Considerations
 
