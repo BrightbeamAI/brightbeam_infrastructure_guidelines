@@ -66,22 +66,3 @@ POSTGRES_CONNECTION_STRING_SECRET    # Key Vault secret name for PostgreSQL conn
 ### Secrets
 
 See [Key Vault documentation](key-vault.md) for the complete list of available secrets.
-
-## Differences from Function Apps
-
-| Feature | Container Apps | Function Apps |
-|---------|---------------|---------------|
-| **Purpose** | Web applications, APIs | Background jobs, scheduled tasks |
-| **Scaling** | HTTP-based autoscaling | Event-driven + timer-based |
-| **Ingress** | External HTTPS endpoint | No public endpoint (event-driven) |
-| **Runtime** | Any container | Azure Functions runtime required |
-| **Storage** | Optional | Required (internal Functions state) |
-| **Environment Variables** | Core vars only | Core vars + Functions-specific |
-
-Both apps have identical access to:
-- Key Vault secrets via managed identity
-- PostgreSQL database
-- Storage accounts
-- Azure OpenAI
-
-See [Function Apps documentation](function-apps.md) for details on scheduled tasks and background processing.

@@ -103,23 +103,6 @@ Function Apps run as Docker containers pulled from Azure Container Registry:
 
 Container images are pulled using the Function App's managed identity (no username/password required).
 
-## Differences from Container Apps
-
-| Feature | Container Apps | Function Apps |
-|---------|---------------|---------------|
-| **Purpose** | Web applications, APIs | Background jobs, scheduled tasks |
-| **Scaling** | HTTP-based autoscaling | Event-driven + timer-based |
-| **Ingress** | External HTTPS endpoint | No public endpoint (event-driven) |
-| **Runtime** | Any container | Azure Functions runtime required |
-| **Storage** | Optional | Required (internal Functions state) |
-| **Environment Variables** | Same core vars + Functions-specific | Same core vars |
-
-Both apps have identical access to:
-- Key Vault secrets via managed identity
-- PostgreSQL database
-- Storage accounts
-- Azure OpenAI
-
 ## Additional Resources
 
 - [Azure Functions Documentation](https://learn.microsoft.com/en-us/azure/azure-functions/)
