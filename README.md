@@ -1,6 +1,6 @@
-# Brightbeam Lifesciences Infrastructure Guidelines
+# Brightbeam Infrastructure Guidelines
 
-Infrastructure documentation and deployment guidelines for Brightbeam Lifesciences solutions on Microsoft Azure.
+Infrastructure documentation and deployment guidelines for Brightbeam solutions on Microsoft Azure.
 
 ## Overview
 

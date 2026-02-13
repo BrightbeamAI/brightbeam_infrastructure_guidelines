@@ -1,6 +1,6 @@
 # Getting Started Guide
 
-This guide will walk you through deploying the Brightbeam Lifesciences infrastructure on Microsoft Azure from scratch. If you're new to Azure or infrastructure deployment, follow these steps carefully.
+This guide will walk you through deploying Brightbeam infrastructure on Microsoft Azure from scratch. If you're new to Azure or infrastructure deployment, follow these steps carefully.
 
 ## 1. Prerequisites
 
@@ -188,7 +188,7 @@ Clone this infrastructure repository to your local machine:
 
 ```bash
 git clone <repository-url>
-cd brightbeam-lifesciences-medtech-infrastructure-guidelines
+cd brightbeam-infrastructure-guidelines
 ```
 
 ### Understanding the Directory Structure
